@@ -1,13 +1,16 @@
 package ru.improve.crm.services.imp;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.improve.crm.dto.seller.SellerGetResponse;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
-import ru.improve.crm.dto.seller.SellerUpdateRequest;
+import ru.improve.crm.dto.seller.SellerPatchRequest;
+import ru.improve.crm.error.exceptions.AlreadyException;
 import ru.improve.crm.error.exceptions.NotFoundException;
+import ru.improve.crm.mappers.SellerMapper;
 import ru.improve.crm.models.Seller;
 import ru.improve.crm.repositories.SellerRepository;
 import ru.improve.crm.services.SellerService;
@@ -23,7 +26,8 @@ public class SellerServiceImp implements SellerService {
 
     private final SellerRepository sellerRepository;
 
-    
+    private final SellerMapper sellerMapper;
+
     @Override
     public List<SellerGetResponse> getAllSellers() {
         List<Seller> sellerList = sellerRepository.findAll();
@@ -51,27 +55,25 @@ public class SellerServiceImp implements SellerService {
                 .build();
     }
 
-    
     @Override
     public SellerPostResponse saveSeller(SellerPostRequest sellerPostRequest) {
-        Seller seller = Seller.builder()
-                .name(sellerPostRequest.getName())
-                .contactInfo(sellerPostRequest.getContactInfo())
-                .registrationDate(LocalDateTime.now())
-                .build();
+        Seller seller = sellerMapper.toSeller(sellerPostRequest);
+        seller.setRegistrationDate(LocalDateTime.now());
 
-        Seller saveSeller = sellerRepository.save(seller);
-        return new SellerPostResponse(saveSeller.getId());
+        try {
+            Seller saveSeller = sellerRepository.save(seller);
+            return new SellerPostResponse(saveSeller.getId());
+        } catch (DataIntegrityViolationException ex) {
+            throw new AlreadyException(ex.getMessage(), List.of("contactInfo"));
+        }
     }
 
-    
     @Override
-    public void updateSeller(int updateSellerId, SellerUpdateRequest sellerUpdateRequest) {
+    public void patchSeller(int updateSellerId, SellerPatchRequest sellerPatchRequest) {
         Seller seller = sellerRepository.findById(updateSellerId)
                 .orElseThrow(() -> new NotFoundException("not found seller for update", List.of("id")));
-        
-        seller.setName(sellerUpdateRequest.getName());
-        seller.setContactInfo(sellerUpdateRequest.getContactInfo());
+
+        sellerMapper.patchSeller(seller, sellerPatchRequest);
     }
     
     @Override

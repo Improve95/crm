@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Range;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SellerUpdateRequest {
+public class SellerPatchRequest {
 
     @NotEmpty
     @Range(min = 1, max = 50)
