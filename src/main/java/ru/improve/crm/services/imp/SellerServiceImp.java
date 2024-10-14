@@ -62,7 +62,7 @@ public class SellerServiceImp implements SellerService {
 
         try {
             Seller saveSeller = sellerRepository.save(seller);
-            return new SellerPostResponse(saveSeller.getId());
+            return sellerMapper.toSellerPostResponse(saveSeller);
         } catch (DataIntegrityViolationException ex) {
             throw new AlreadyExistException(ex.getMessage(), List.of("contactInfo"));
         }
