@@ -1,11 +1,11 @@
 package ru.improve.crm.dto.seller;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 
 @Data
 @Getter
@@ -14,10 +14,10 @@ import org.hibernate.validator.constraints.Range;
 public class SellerPostRequest {
 
     @NotEmpty
-    @Range(min = 1, max = 50)
+    @Size(min = 2, max = 50)
     private String name;
 
     @NotEmpty
-    @Range(min = 1, max = 100)
+    @Size(min = 5, max = 100)
     private String contactInfo;
 }

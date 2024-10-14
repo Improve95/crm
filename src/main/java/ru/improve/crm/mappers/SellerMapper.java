@@ -12,5 +12,5 @@ public interface SellerMapper {
 
     Seller toSeller(SellerPostRequest sellerPostRequest);
 
-    void patchSeller(@MappingTarget Seller seller, SellerPatchRequest sellerPatchRequest);
+    void patchSeller(SellerPatchRequest sellerPatchRequest, @MappingTarget Seller seller);
 }

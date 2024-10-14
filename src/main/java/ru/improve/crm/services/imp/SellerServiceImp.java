@@ -5,10 +5,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.improve.crm.dto.seller.SellerGetResponse;
+import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
-import ru.improve.crm.dto.seller.SellerPatchRequest;
-import ru.improve.crm.error.exceptions.AlreadyException;
+import ru.improve.crm.error.exceptions.AlreadyExistException;
 import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.mappers.SellerMapper;
 import ru.improve.crm.models.Seller;
@@ -64,7 +64,7 @@ public class SellerServiceImp implements SellerService {
             Seller saveSeller = sellerRepository.save(seller);
             return new SellerPostResponse(saveSeller.getId());
         } catch (DataIntegrityViolationException ex) {
-            throw new AlreadyException(ex.getMessage(), List.of("contactInfo"));
+            throw new AlreadyExistException(ex.getMessage(), List.of("contactInfo"));
         }
     }
 
@@ -73,7 +73,7 @@ public class SellerServiceImp implements SellerService {
         Seller seller = sellerRepository.findById(updateSellerId)
                 .orElseThrow(() -> new NotFoundException("not found seller for update", List.of("id")));
 
-        sellerMapper.patchSeller(seller, sellerPatchRequest);
+        sellerMapper.patchSeller(sellerPatchRequest, seller);
     }
     
     @Override

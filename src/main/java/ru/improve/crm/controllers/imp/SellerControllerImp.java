@@ -17,6 +17,7 @@ import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
 import ru.improve.crm.services.SellerService;
+import ru.improve.crm.validators.SellerValidator;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ import java.util.List;
 public class SellerControllerImp implements SellerController {
 
     private final SellerService sellerService;
+
+
+    private final SellerValidator sellerValidator;
 
     @GetMapping
     public List<SellerGetResponse> getAllSellers() {
@@ -42,7 +46,7 @@ public class SellerControllerImp implements SellerController {
     public SellerPostResponse saveSeller(@Validated @RequestBody SellerPostRequest sellerPostRequest,
                                          BindingResult bindingResult) {
 
-        /* todo: намутить валидатор */
+        sellerValidator.validate(sellerPostRequest, bindingResult);
 
         return sellerService.saveSeller(sellerPostRequest);
     }
@@ -52,7 +56,7 @@ public class SellerControllerImp implements SellerController {
                             @Validated @RequestBody SellerPatchRequest sellerPatchRequest,
                             BindingResult bindingResult) {
 
-        /* todo: намутить валидатор */
+        sellerValidator.validate(sellerPatchRequest, bindingResult);
 
         sellerService.patchSeller(patchSellerId, sellerPatchRequest);
     }

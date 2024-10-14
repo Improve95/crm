@@ -1,5 +1,8 @@
 package ru.improve.crm.error.exceptions;
 
+import lombok.Data;
+import lombok.Setter;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -7,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
+@Setter
 public class CustomCrmException extends RuntimeException {
 
     public CustomCrmException(String message, List<String> fieldsWithError) {
