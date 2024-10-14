@@ -8,7 +8,7 @@ import ru.improve.crm.validators.DefaultCrmValidator;
 import ru.improve.crm.validators.SellerValidator;
 
 @Component
-public class SellerCrmValidatorImp extends DefaultCrmValidator implements SellerValidator {
+public class SellerValidatorImp extends DefaultCrmValidator implements SellerValidator {
 
     @Override
     public boolean supports(Class<?> clazz) {

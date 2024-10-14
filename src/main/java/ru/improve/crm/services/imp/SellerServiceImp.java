@@ -32,12 +32,7 @@ public class SellerServiceImp implements SellerService {
     public List<SellerGetResponse> getAllSellers() {
         List<Seller> sellerList = sellerRepository.findAll();
         return sellerList.stream()
-                .map(seller -> SellerGetResponse.builder()
-                        .id(seller.getId())
-                        .name(seller.getName())
-                        .contactInfo(seller.getContactInfo())
-                        .registrationDate(seller.getRegistrationDate())
-                        .build())
+                .map(seller -> sellerMapper.toSellerGetResponse(seller))
                 .collect(Collectors.toList());
     }
 
@@ -47,12 +42,7 @@ public class SellerServiceImp implements SellerService {
         Seller seller = sellerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
-        return SellerGetResponse.builder()
-                .id(seller.getId())
-                .name(seller.getName())
-                .contactInfo(seller.getContactInfo())
-                .registrationDate(seller.getRegistrationDate())
-                .build();
+        return sellerMapper.toSellerGetResponse(seller);
     }
 
     @Override

@@ -12,6 +12,7 @@ import ru.improve.crm.models.Seller;
 import ru.improve.crm.models.Transaction;
 import ru.improve.crm.repositories.SellerRepository;
 import ru.improve.crm.repositories.TransactionRepository;
+import ru.improve.crm.services.TransactionService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,20 +21,22 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TransactionServiceImp {
+public class TransactionServiceImp implements TransactionService {
     
     private final TransactionRepository transactionRepository;
     private final SellerRepository sellerRepository;
 
     private final TransactionMapper transactionMapper;
 
-    public List<TransactionGetResponse> getAllSellers() {
+    @Override
+    public List<TransactionGetResponse> getAllTransactions() {
         List<Transaction> transactionList = transactionRepository.findAll();
         return transactionList.stream()
                 .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
                 .collect(Collectors.toList());
     }
 
+    @Override
     public TransactionGetResponse getTransactionById(int id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found transaction", List.of("id")));
@@ -41,6 +44,7 @@ public class TransactionServiceImp {
         return transactionMapper.toTransactionGetResponse(transaction);
     }
 
+    @Override
     public List<TransactionGetResponse> getAllTransactionsBySellerId(int sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
@@ -51,6 +55,7 @@ public class TransactionServiceImp {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public TransactionPostResponse saveTransaction(TransactionPostRequest transactionPostRequest) {
         Transaction transaction = transactionMapper.toTransaction(transactionPostRequest);
         transaction.setTransactionDate(LocalDateTime.now());
