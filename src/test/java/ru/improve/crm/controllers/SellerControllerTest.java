@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.validation.BindingResult;
 import ru.improve.crm.controllers.imp.SellerControllerImp;
 import ru.improve.crm.dto.seller.SellerGetResponse;
 import ru.improve.crm.dto.seller.SellerPostRequest;
@@ -19,11 +17,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.ExpectedCount.times;
 
 @ExtendWith(MockitoExtension.class)
 public class SellerControllerTest {
@@ -75,17 +70,17 @@ public class SellerControllerTest {
         SellerPostRequest postRequest = new SellerPostRequest("name0", "contact0");
         SellerPostResponse postResponse = new SellerPostResponse(1, regTime);
 
-        doNothing().when(sellerValidator).validate(postRequest, bindingResult);
+//        doNothing().when(sellerValidator).validate(postRequest, bindingResult);
         doReturn(postResponse).when(sellerService.saveSeller(postRequest));
 
         // when
-        SellerPostResponse result = sellerController.saveSeller(postRequest, bindingResult);
+        SellerPostResponse result = sellerController.saveSeller(postRequest, null);
 
         // then
         assertEquals(1, result.getId());
         assertEquals(regTime, result.getRegistrationDate());
 
-//        verify(sellerValidator, times(1)).validate(postRequest, bindingResult);
-        verify(sellerService, times(1)).saveSeller(postRequest);
+//        verify(sellerValidator).validate(postRequest, bindingResult);
+        verify(sellerService).saveSeller(postRequest);
     }
 }
