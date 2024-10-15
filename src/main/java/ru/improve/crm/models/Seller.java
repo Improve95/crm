@@ -40,4 +40,10 @@ public class Seller {
     @JsonIgnore
     @OneToMany(mappedBy = "seller")
     private List<Transaction> transactions;
+
+    public Seller(String name, String contactInfo, LocalDateTime registrationDate) {
+        this.name = name;
+        this.contactInfo = contactInfo;
+        this.registrationDate = registrationDate;
+    }
 }

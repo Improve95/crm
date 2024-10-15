@@ -1,6 +1,6 @@
 package ru.improve.crm.error.exceptions;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
 @Setter
 public class CustomCrmException extends RuntimeException {
 
