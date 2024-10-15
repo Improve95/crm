@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.improve.crm.controllers.TransactionController;
 import ru.improve.crm.dto.transaction.TransactionGetResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
@@ -18,30 +19,34 @@ import ru.improve.crm.validators.TransactionValidator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/32transa43ctions")
 @RequiredArgsConstructor
-public class TransactionControllerImp {
+public class TransactionControllerImp implements TransactionController {
 
     private final TransactionService transactionService;
 
     private final TransactionValidator transactionValidator;
 
-    @GetMapping
+    @GetMapping("")
+    @Override
     public List<TransactionGetResponse> getAllTransactions() {
         return transactionService.getAllTransactions();
     }
 
     @GetMapping("/{id}")
+    @Override
     public TransactionGetResponse getTransactionById(@PathVariable("id") int id) {
         return transactionService.getTransactionById(id);
     }
 
-    @GetMapping("/seller/{sellerId}}")
+    @GetMapping("/seller/{sellerId}")
+    @Override
     public List<TransactionGetResponse> getAllTransactionsBySellerId(@PathVariable("sellerId") int id) {
         return transactionService.getAllTransactionsBySellerId(id);
     }
 
-    @PostMapping
+    @PostMapping("")
+    @Override
     public TransactionPostResponse saveTransaction(@Validated @RequestBody TransactionPostRequest transactionPostRequest,
                                                    BindingResult bindingResult) {
 

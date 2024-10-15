@@ -28,15 +28,16 @@ public class SellerControllerImp implements SellerController {
 
     private final SellerService sellerService;
 
-
     private final SellerValidator sellerValidator;
 
     @GetMapping
+    @Override
     public List<SellerGetResponse> getAllSellers() {
         return sellerService.getAllSellers();
     }
 
     @GetMapping("/{id}")
+    @Override
     public SellerGetResponse getSellerById(@PathVariable("id") int id) {
         return sellerService.getSellerById(id);
     }
@@ -52,6 +53,7 @@ public class SellerControllerImp implements SellerController {
     }
 
     @PatchMapping("/{id}")
+    @Override
     public void patchSeller(@PathVariable("id") int patchSellerId,
                             @Validated @RequestBody SellerPatchRequest sellerPatchRequest,
                             BindingResult bindingResult) {
@@ -62,6 +64,7 @@ public class SellerControllerImp implements SellerController {
     }
 
     @DeleteMapping("/{id}")
+    @Override
     public void deleteSeller(@PathVariable("id") int deleteSellerId) {
         sellerService.deleteSellerById(deleteSellerId);
     }

@@ -2,7 +2,8 @@ package ru.improve.crm.services.imp;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import ru.improve.crm.dao.repositories.SellerRepository;
+import ru.improve.crm.dao.repositories.TransactionRepository;
 import ru.improve.crm.dto.transaction.TransactionGetResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
@@ -10,8 +11,6 @@ import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.mappers.TransactionMapper;
 import ru.improve.crm.models.Seller;
 import ru.improve.crm.models.Transaction;
-import ru.improve.crm.dao.repositories.SellerRepository;
-import ru.improve.crm.dao.repositories.TransactionRepository;
 import ru.improve.crm.services.TransactionService;
 
 import java.time.LocalDateTime;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class TransactionServiceImp implements TransactionService {
     
     private final TransactionRepository transactionRepository;

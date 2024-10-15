@@ -1,10 +1,12 @@
 package ru.improve.crm.validators.imp;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.validators.DefaultCrmValidator;
 import ru.improve.crm.validators.TransactionValidator;
 
+@Component
 public class TransactionValidatorImp extends DefaultCrmValidator implements TransactionValidator {
 
     @Override
