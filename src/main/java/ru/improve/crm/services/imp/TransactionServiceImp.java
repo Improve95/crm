@@ -10,8 +10,8 @@ import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.mappers.TransactionMapper;
 import ru.improve.crm.models.Seller;
 import ru.improve.crm.models.Transaction;
-import ru.improve.crm.repositories.SellerRepository;
-import ru.improve.crm.repositories.TransactionRepository;
+import ru.improve.crm.dao.repositories.SellerRepository;
+import ru.improve.crm.dao.repositories.TransactionRepository;
 import ru.improve.crm.services.TransactionService;
 
 import java.time.LocalDateTime;
@@ -57,10 +57,12 @@ public class TransactionServiceImp implements TransactionService {
 
     @Override
     public TransactionPostResponse saveTransaction(TransactionPostRequest transactionPostRequest) {
-        Transaction transaction = transactionMapper.toTransaction(transactionPostRequest);
-        transaction.setTransactionDate(LocalDateTime.now());
+        Seller seller = sellerRepository.findById(transactionPostRequest.getSellerId())
+                .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
-        /* не забыть добавить в список продавца эту транзакцию в hibernate */
+        Transaction transaction = transactionMapper.toTransaction(transactionPostRequest);
+        transaction.setSeller(seller);
+        transaction.setTransactionDate(LocalDateTime.now());
 
         Transaction saveTransaction = transactionRepository.save(transaction);
         return transactionMapper.toTransactionPostResponse(saveTransaction);

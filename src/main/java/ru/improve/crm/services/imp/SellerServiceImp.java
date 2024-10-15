@@ -12,7 +12,7 @@ import ru.improve.crm.error.exceptions.AlreadyExistException;
 import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.mappers.SellerMapper;
 import ru.improve.crm.models.Seller;
-import ru.improve.crm.repositories.SellerRepository;
+import ru.improve.crm.dao.repositories.SellerRepository;
 import ru.improve.crm.services.SellerService;
 
 import java.time.LocalDateTime;

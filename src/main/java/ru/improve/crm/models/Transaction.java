@@ -35,4 +35,11 @@ public class Transaction {
     private String paymentType;
 
     private LocalDateTime transactionDate;
+
+    public Transaction(Seller seller, int amount, String paymentType, LocalDateTime transactionDate) {
+        this.seller = seller;
+        this.amount = amount;
+        this.paymentType = paymentType;
+        this.transactionDate = transactionDate;
+    }
 }
