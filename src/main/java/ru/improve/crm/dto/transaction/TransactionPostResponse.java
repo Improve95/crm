@@ -1,19 +1,19 @@
-package ru.improve.crm.dto.seller;
+package ru.improve.crm.dto.transaction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Data
-@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SellerPostResponse {
+public class TransactionPostResponse {
 
     private int id;
 
-    private LocalDateTime registrationDate;
+    private LocalDateTime transactionDate;
 }
