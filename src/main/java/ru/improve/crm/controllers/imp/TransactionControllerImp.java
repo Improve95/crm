@@ -19,7 +19,7 @@ import ru.improve.crm.validators.TransactionValidator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/32transa43ctions")
+@RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionControllerImp implements TransactionController {
 

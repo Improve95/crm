@@ -29,9 +29,10 @@ public class TransactionServiceImp implements TransactionService {
     @Override
     public List<TransactionGetResponse> getAllTransactions() {
         List<Transaction> transactionList = transactionRepository.findAll();
-        return transactionList.stream()
+        /*return transactionList.stream()
                 .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        return null;
     }
 
     @Override
