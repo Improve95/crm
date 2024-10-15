@@ -1,14 +1,18 @@
 package ru.improve.crm.services.imp;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.improve.crm.dao.SellerDao;
 import ru.improve.crm.dao.repositories.SellerRepository;
+import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
 import ru.improve.crm.dto.seller.SellerGetResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
+import ru.improve.crm.dto.seller.WithLessAmountByPeriodRequest;
 import ru.improve.crm.error.exceptions.AlreadyExistException;
 import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.mappers.SellerMapper;
@@ -19,19 +23,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SellerServiceImp implements SellerService {
 
     private final SellerRepository sellerRepository;
+    private final SellerDao sellerDao;
 
     private final SellerMapper sellerMapper;
 
     @Transactional
     @Override
     public List<SellerGetResponse> getAllSellers() {
-        List<Seller> sellerList = sellerRepository.findAll();
-        return sellerList.stream()
+        List<Seller> sellers = sellerRepository.findAll();
+        return sellers.stream()
                 .map(seller -> sellerMapper.toSellerGetResponse(seller))
                 .collect(Collectors.toList());
     }
@@ -43,6 +49,30 @@ public class SellerServiceImp implements SellerService {
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
         return sellerMapper.toSellerGetResponse(seller);
+    }
+
+    @Transactional
+    @Override
+    public SellerGetResponse getMostProductivitySellerByPeriod(
+            MostProductivityByPeriodRequest request) {
+
+        LocalDateTime startPeriod = request.getStartPeriod();
+        LocalDateTime endPeriod = request.getEndPeriod();
+
+        Seller seller = sellerDao.getMostProductivitySellerByPeriod(startPeriod, endPeriod);
+        return sellerMapper.toSellerGetResponse(seller);
+    }
+
+    @Transactional
+    @Override
+    public List<SellerGetResponse> getSellersWithLessAmountByPeriod(WithLessAmountByPeriodRequest request) {
+        LocalDateTime startPeriod = request.getStartPeriod();
+        LocalDateTime endPeriod = request.getEndPeriod();
+        int maxAmount = request.getMaxAmount();
+
+        return sellerDao.getSellersWithLessSumByPeriod(startPeriod, endPeriod, maxAmount).stream()
+                .map(seller -> sellerMapper.toSellerGetResponse(seller))
+                .collect(Collectors.toList());
     }
 
     @Transactional

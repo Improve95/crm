@@ -1,4 +1,4 @@
-package ru.improve.crm.models;
+package ru.improve.crm.models.transaction;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.improve.crm.models.Seller;
 
 import java.time.LocalDateTime;
 
@@ -27,12 +28,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "seller", referencedColumnName = "id")
     private Seller seller;
 
     private int amount;
 
+    /* не знаю почему в тз указана строка как тип данных,
+        логичнее было бы использовать перечисления для типа перевода */
     private String paymentType;
 
     private LocalDateTime transactionDate;

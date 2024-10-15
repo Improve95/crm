@@ -1,10 +1,12 @@
 package ru.improve.crm.dto.transaction;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.improve.crm.models.Seller;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +19,8 @@ public class TransactionGetResponse {
 
     private int id;
 
-    private int sellerId;
+    @JsonManagedReference
+    private Seller seller;
 
     private int amount;
 

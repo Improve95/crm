@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.improve.crm.dao.repositories.SellerRepository;
 import ru.improve.crm.dao.repositories.TransactionRepository;
 import ru.improve.crm.models.Seller;
-import ru.improve.crm.models.Transaction;
+import ru.improve.crm.models.transaction.Transaction;
 import ru.improve.crm.dto.transaction.TransactionGetResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
@@ -32,14 +32,9 @@ public class TransactionServiceImp implements TransactionService {
     @Transactional
     @Override
     public List<TransactionGetResponse> getAllTransactions() {
-        List<Transaction> transactionList = transactionRepository.findAll();
-        return transactionList.stream()
-                .map(transaction -> {
-                    TransactionGetResponse response = transactionMapper.toTransactionGetResponse(transaction);
-                    Seller seller = transaction.getSeller();
-                    response.setSellerId(seller.getId());
-                    return response;
-                })
+        List<Transaction> transactions = transactionRepository.findAll();
+        return transactions.stream()
+                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
                 .collect(Collectors.toList());
     }
 
@@ -49,11 +44,7 @@ public class TransactionServiceImp implements TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found transaction", List.of("id")));
 
-        /* todo: перенести в логику маппера */
-        TransactionGetResponse response = transactionMapper.toTransactionGetResponse(transaction);
-        Seller seller = transaction.getSeller();
-        response.setSellerId(seller.getId());
-        return response;
+        return transactionMapper.toTransactionGetResponse(transaction);
     }
 
     @Transactional
@@ -62,13 +53,9 @@ public class TransactionServiceImp implements TransactionService {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
-        List<Transaction> transactionList = seller.getTransactionList();
-        return transactionList.stream()
-                .map(transaction -> {
-                    TransactionGetResponse response = transactionMapper.toTransactionGetResponse(transaction);
-                    response.setSellerId(sellerId);
-                    return response;
-                })
+        List<Transaction> transactions = seller.getTransactions();
+        return transactions.stream()
+                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
                 .collect(Collectors.toList());
     }
 

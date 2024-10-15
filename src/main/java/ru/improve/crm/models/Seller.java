@@ -1,5 +1,6 @@
 package ru.improve.crm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.improve.crm.models.transaction.Transaction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +37,7 @@ public class Seller {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "seller")
-    private List<Transaction> transactionList;
+    private List<Transaction> transactions;
 }
