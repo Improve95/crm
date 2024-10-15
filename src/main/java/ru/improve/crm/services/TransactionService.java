@@ -7,6 +7,7 @@ import ru.improve.crm.dto.transaction.TransactionPostResponse;
 import java.util.List;
 
 public interface TransactionService {
+
     List<TransactionGetResponse> getAllTransactions();
 
     TransactionGetResponse getTransactionById(int id);
