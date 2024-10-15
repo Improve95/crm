@@ -34,12 +34,7 @@ public class TransactionServiceImp implements TransactionService {
     public List<TransactionGetResponse> getAllTransactions() {
         List<Transaction> transactions = transactionRepository.findAll();
         return transactions.stream()
-                .map(transaction -> {
-                    TransactionGetResponse response = transactionMapper.toTransactionGetResponse(transaction);
-                    Seller seller = transaction.getSeller();
-                    response.setSellerId(seller.getId());
-                    return response;
-                })
+                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
                 .collect(Collectors.toList());
     }
 
@@ -49,11 +44,7 @@ public class TransactionServiceImp implements TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found transaction", List.of("id")));
 
-        /* todo: перенести в логику маппера */
-        TransactionGetResponse response = transactionMapper.toTransactionGetResponse(transaction);
-        Seller seller = transaction.getSeller();
-        response.setSellerId(seller.getId());
-        return response;
+        return transactionMapper.toTransactionGetResponse(transaction);
     }
 
     @Transactional
@@ -64,11 +55,7 @@ public class TransactionServiceImp implements TransactionService {
 
         List<Transaction> transactions = seller.getTransactions();
         return transactions.stream()
-                .map(transaction -> {
-                    TransactionGetResponse response = transactionMapper.toTransactionGetResponse(transaction);
-                    response.setSellerId(sellerId);
-                    return response;
-                })
+                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
                 .collect(Collectors.toList());
     }
 

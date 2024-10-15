@@ -1,7 +1,6 @@
 package ru.improve.crm.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +26,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "seller", referencedColumnName = "id")
     private Seller seller;
 
@@ -36,11 +35,4 @@ public class Transaction {
     private String paymentType;
 
     private LocalDateTime transactionDate;
-
-    public Transaction(Seller seller, int amount, String paymentType, LocalDateTime transactionDate) {
-        this.seller = seller;
-        this.amount = amount;
-        this.paymentType = paymentType;
-        this.transactionDate = transactionDate;
-    }
 }
