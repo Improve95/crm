@@ -1,4 +1,4 @@
-package ru.improve.crm.models;
+package ru.improve.crm.dto.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

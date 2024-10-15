@@ -1,4 +1,4 @@
-package ru.improve.crm.models;
+package ru.improve.crm.dto.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
