@@ -1,6 +1,5 @@
 package ru.improve.crm.models;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "seller")
+@Table(name = "sellers")
 @Data
 @Setter
 @NoArgsConstructor
@@ -36,6 +35,6 @@ public class Seller {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "seller")
     private List<Transaction> transactionList;
 }

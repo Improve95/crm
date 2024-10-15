@@ -15,7 +15,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 @Data
 @Setter
 @NoArgsConstructor
@@ -27,7 +27,7 @@ public class Transaction {
     private int id;
 
     @ManyToOne()
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "seller", referencedColumnName = "id")
     private Seller seller;
 
     private int amount;

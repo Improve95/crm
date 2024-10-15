@@ -5,5 +5,4 @@ import ru.improve.crm.models.Seller;
 
 public interface SellerRepository extends JpaRepository<Seller, Integer> {
 
-
 }
