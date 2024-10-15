@@ -13,7 +13,7 @@ create table transactions (
     transaction_date timestamp not null default current_timestamp
 );
 
-select sum(amount) as total_amount from transactions
-    where transaction_date > 0 and transaction_date < current_timestamp
+select seller from transactions
+    where transaction_date > current_timestamp - interval '2 days' and transaction_date < current_timestamp + interval '2 days'
         group by transactions.seller
-            order by total_amount desc ;
+            order by sum(amount) desc ;
