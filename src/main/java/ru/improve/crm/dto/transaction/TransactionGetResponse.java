@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.improve.crm.dto.models.Seller;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +17,7 @@ public class TransactionGetResponse {
 
     private int id;
 
-    private Seller seller;
+    private int sellerId;
 
     private int amount;
 
