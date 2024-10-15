@@ -6,7 +6,7 @@ import org.mapstruct.ReportingPolicy;
 import ru.improve.crm.dto.transaction.TransactionGetResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
-import ru.improve.crm.models.Transaction;
+import ru.improve.crm.models.transaction.Transaction;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)

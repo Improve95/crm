@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.improve.crm.models.transaction.Transaction;
 
 import java.time.LocalDateTime;
 import java.util.List;
