@@ -36,5 +36,5 @@ public class Seller {
     private LocalDateTime registrationDate;
 
     @OneToMany(mappedBy = "seller")
-    private List<Transaction> transactionList;
+    private List<Transaction> transactions;
 }

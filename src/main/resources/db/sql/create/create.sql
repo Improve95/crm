@@ -12,3 +12,5 @@ create table transactions (
     payment_type varchar(8) not null ,
     transaction_date timestamp not null default current_timestamp
 );
+
+select from

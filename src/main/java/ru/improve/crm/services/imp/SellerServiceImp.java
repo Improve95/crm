@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.improve.crm.dao.imp.SellerDao;
 import ru.improve.crm.dao.repositories.SellerRepository;
+import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
 import ru.improve.crm.dto.seller.SellerGetResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
@@ -24,14 +26,15 @@ import java.util.stream.Collectors;
 public class SellerServiceImp implements SellerService {
 
     private final SellerRepository sellerRepository;
+    private final SellerDao sellerDao;
 
     private final SellerMapper sellerMapper;
 
     @Transactional
     @Override
     public List<SellerGetResponse> getAllSellers() {
-        List<Seller> sellerList = sellerRepository.findAll();
-        return sellerList.stream()
+        List<Seller> sellers = sellerRepository.findAll();
+        return sellers.stream()
                 .map(seller -> sellerMapper.toSellerGetResponse(seller))
                 .collect(Collectors.toList());
     }
@@ -43,6 +46,17 @@ public class SellerServiceImp implements SellerService {
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
         return sellerMapper.toSellerGetResponse(seller);
+    }
+
+    public SellerGetResponse getMostProductivitySellerByPeriod(
+            MostProductivityByPeriodRequest request) {
+
+        LocalDateTime startPeriod = request.getStartPeriod();
+        LocalDateTime endPeriod = request.getEndPeriod();
+
+        List<Seller> sellers = sellerDao.getMostProductivitySellerByPeriod(startPeriod, endPeriod);
+
+        return null;
     }
 
     @Transactional
