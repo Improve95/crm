@@ -182,7 +182,7 @@ public class SellerControllerIt {
         this.mockMvc.perform(reqBuilderGet2)
                 //then
                 .andExpectAll(
-                        status().is(503),
+                        status().is(400),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json("""
                                     {
