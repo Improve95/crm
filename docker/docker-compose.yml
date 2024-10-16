@@ -11,3 +11,14 @@ services:
       - ./pgdata:/var/lib/postgresql/data
     ports:
       - 5430:5432
+
+  crmTestDatabase:
+    container_name: crmTestDb
+    image: postgres:16.4
+    hostname: database
+    environment:
+      - POSTGRES_DB=crmTestDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5431:5432

@@ -20,9 +20,13 @@ public class CustomCrmException extends RuntimeException {
         this.time = LocalDateTime.now().toInstant(ZoneOffset.UTC);
     }
 
-    private String message;
+    protected String message;
 
-    private Set<String> fieldsWithError;
+    protected Set<String> fieldsWithError;
 
-    private Instant time;
+    protected Instant time;
+
+    public List<String> getFieldsWithErrorList() {
+        return fieldsWithError.stream().toList();
+    }
 }
