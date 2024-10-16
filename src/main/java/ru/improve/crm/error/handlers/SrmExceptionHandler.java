@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.improve.crm.error.exceptions.AlreadyExistException;
 import ru.improve.crm.error.exceptions.CustomCrmException;
 import ru.improve.crm.error.exceptions.InDtoException;
+import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.error.responseBody.CustomErrorResponse;
 import ru.improve.crm.error.responseBody.DefaultErrorResponse;
 
@@ -30,7 +31,8 @@ public class SrmExceptionHandler {
     }
 
     private HttpStatus determineHttpStatus(Exception ex) {
-        if (ex instanceof InDtoException ||
+        if (    ex instanceof NotFoundException ||
+                ex instanceof InDtoException ||
                 ex instanceof DateTimeParseException ||
                 ex instanceof AlreadyExistException) {
 
