@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
-import ru.improve.crm.dto.seller.SellerGetResponse;
+import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
@@ -18,7 +18,7 @@ public interface SellerMapper {
 
     SellerPostResponse toSellerPostResponse(Seller seller);
 
-    SellerGetResponse toSellerGetResponse(Seller seller);
+    SellerDataResponse toSellerDataResponse(Seller seller);
 
     void patchSeller(SellerPatchRequest sellerPatchRequest, @MappingTarget Seller seller);
 }

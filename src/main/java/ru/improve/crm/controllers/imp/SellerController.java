@@ -1,6 +1,8 @@
 package ru.improve.crm.controllers.imp;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,9 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.improve.crm.controllers.SellerController;
 import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
-import ru.improve.crm.dto.seller.SellerGetResponse;
+import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
@@ -26,27 +27,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/sellers")
 @RequiredArgsConstructor
-public class SellerControllerImp implements SellerController {
+public class SellerController {
 
     private final SellerService sellerService;
 
     private final SellerValidator sellerValidator;
 
     @GetMapping
-    @Override
-    public List<SellerGetResponse> getAllSellers() {
-        return sellerService.getAllSellers();
+    public ResponseEntity<List<SellerDataResponse>> getAllSellers() {
+        return new ResponseEntity<>(sellerService.getAllSellers(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @Override
-    public SellerGetResponse getSellerById(@PathVariable("id") int id) {
-        return sellerService.getSellerById(id);
+    public ResponseEntity<SellerDataResponse> getSellerById(@PathVariable("id") int id) {
+        return new ResponseEntity<>(sellerService.getSellerById(id), HttpStatus.OK);
     }
 
     @GetMapping("/mostProductivity")
-    public SellerGetResponse getMostProductivitySellerByPeriod(@Validated @RequestBody MostProductivityByPeriodRequest request,
-                                                               BindingResult bindingResult) {
+    public SellerDataResponse getMostProductivitySellerByPeriod(@Validated @RequestBody MostProductivityByPeriodRequest request,
+                                                                BindingResult bindingResult) {
 
         sellerValidator.validate(request, bindingResult);
 
@@ -54,38 +53,37 @@ public class SellerControllerImp implements SellerController {
     }
 
     @GetMapping("/withLessAmount")
-    public List<SellerGetResponse>  getSellersWithLessAmountByPeriod(@Validated @RequestBody WithLessAmountByPeriodRequest request,
-                                                                     BindingResult bindingResult) {
+    public ResponseEntity<List<SellerDataResponse>>  getSellersWithLessAmountByPeriod(@Validated @RequestBody WithLessAmountByPeriodRequest request,
+                                                                                      BindingResult bindingResult) {
 
         sellerValidator.validate(request, bindingResult);
 
-        return sellerService.getSellersWithLessAmountByPeriod(request);
+        return new ResponseEntity<>(sellerService.getSellersWithLessAmountByPeriod(request), HttpStatus.OK);
     }
 
     @PostMapping()
-    @Override
-    public SellerPostResponse saveSeller(@Validated @RequestBody SellerPostRequest sellerPostRequest,
+    public ResponseEntity<SellerPostResponse> saveSeller(@Validated @RequestBody SellerPostRequest sellerPostRequest,
                                          BindingResult bindingResult) {
 
         sellerValidator.validate(sellerPostRequest, bindingResult);
 
-        return sellerService.saveSeller(sellerPostRequest);
+        return new ResponseEntity<>(sellerService.saveSeller(sellerPostRequest), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    @Override
-    public void patchSeller(@PathVariable("id") int patchSellerId,
+    public ResponseEntity<SellerDataResponse> patchSeller(@PathVariable("id") int patchSellerId,
                             @Validated @RequestBody SellerPatchRequest sellerPatchRequest,
                             BindingResult bindingResult) {
 
         sellerValidator.validate(sellerPatchRequest, bindingResult);
 
-        sellerService.patchSeller(patchSellerId, sellerPatchRequest);
+        SellerDataResponse sellerDataResponse = sellerService.patchSeller(patchSellerId, sellerPatchRequest);
+        return new ResponseEntity<>(sellerDataResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Override
-    public void deleteSeller(@PathVariable("id") int deleteSellerId) {
+    public ResponseEntity<Void> deleteSeller(@PathVariable("id") int deleteSellerId) {
         sellerService.deleteSellerById(deleteSellerId);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
