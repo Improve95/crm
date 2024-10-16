@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.improve.crm.dao.SellerDao;
 import ru.improve.crm.dao.repositories.SellerRepository;
 import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
-import ru.improve.crm.dto.seller.SellerGetResponse;
+import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
@@ -35,43 +35,43 @@ public class SellerServiceImp implements SellerService {
 
     @Transactional
     @Override
-    public List<SellerGetResponse> getAllSellers() {
+    public List<SellerDataResponse> getAllSellers() {
         List<Seller> sellers = sellerRepository.findAll();
         return sellers.stream()
-                .map(seller -> sellerMapper.toSellerGetResponse(seller))
+                .map(seller -> sellerMapper.toSellerDataResponse(seller))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     @Override
-    public SellerGetResponse getSellerById(int id) {
+    public SellerDataResponse getSellerById(int id) {
         Seller seller = sellerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
-        return sellerMapper.toSellerGetResponse(seller);
+        return sellerMapper.toSellerDataResponse(seller);
     }
 
     @Transactional
     @Override
-    public SellerGetResponse getMostProductivitySellerByPeriod(
+    public SellerDataResponse getMostProductivitySellerByPeriod(
             MostProductivityByPeriodRequest request) {
 
         LocalDateTime startPeriod = request.getStartPeriod();
         LocalDateTime endPeriod = request.getEndPeriod();
 
         Seller seller = sellerDao.getMostProductivitySellerByPeriod(startPeriod, endPeriod);
-        return sellerMapper.toSellerGetResponse(seller);
+        return sellerMapper.toSellerDataResponse(seller);
     }
 
     @Transactional
     @Override
-    public List<SellerGetResponse> getSellersWithLessAmountByPeriod(WithLessAmountByPeriodRequest request) {
+    public List<SellerDataResponse> getSellersWithLessAmountByPeriod(WithLessAmountByPeriodRequest request) {
         LocalDateTime startPeriod = request.getStartPeriod();
         LocalDateTime endPeriod = request.getEndPeriod();
         int maxAmount = request.getMaxAmount();
 
         return sellerDao.getSellersWithLessSumByPeriod(startPeriod, endPeriod, maxAmount).stream()
-                .map(seller -> sellerMapper.toSellerGetResponse(seller))
+                .map(seller -> sellerMapper.toSellerDataResponse(seller))
                 .collect(Collectors.toList());
     }
 
@@ -91,11 +91,12 @@ public class SellerServiceImp implements SellerService {
 
     @Transactional
     @Override
-    public void patchSeller(int updateSellerId, SellerPatchRequest sellerPatchRequest) {
+    public SellerDataResponse patchSeller(int updateSellerId, SellerPatchRequest sellerPatchRequest) {
         Seller seller = sellerRepository.findById(updateSellerId)
                 .orElseThrow(() -> new NotFoundException("not found seller for update", List.of("id")));
 
         sellerMapper.patchSeller(sellerPatchRequest, seller);
+        return sellerMapper.toSellerDataResponse(seller);
     }
 
     @Transactional
