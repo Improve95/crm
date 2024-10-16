@@ -13,6 +13,7 @@ import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
+import ru.improve.crm.error.exceptions.InDtoException;
 import ru.improve.crm.services.imp.SellerServiceImp;
 import ru.improve.crm.validators.imp.SellerValidatorImp;
 
@@ -21,7 +22,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -95,8 +99,22 @@ public class SellerControllerTest {
         verify(sellerService).saveSeller(postRequest);
     }
 
+    @Test()
+    void saveSeller_PostSellerIsNotValid_ThrowInDtoException() {
+        // given
+        SellerPostRequest postRequest = new SellerPostRequest("", "contact0");
+        doThrow(new InDtoException("", List.of("name"))).when(this.sellerValidator).validate(postRequest, bindingResult);
+
+        // when
+        InDtoException inDtoException = assertThrows(InDtoException.class,
+                () -> sellerController.saveSeller(postRequest, bindingResult));
+
+        // then
+        assertEquals(List.of("name"), inDtoException.getFieldsWithErrorList());
+    }
+
     @Test
-    void patchSeller_PatchSellerReqIsValid() {
+    void patchSeller_PatchSellerReqIsValid_ReturnsPatchedSeller() {
         //given
         LocalDateTime regTime = LocalDateTime.now();
 
@@ -113,5 +131,20 @@ public class SellerControllerTest {
         assertEquals(HttpStatus.OK, re.getStatusCode());
         verify(sellerValidator).validate(patchReq, bindingResult);
         verify(sellerService).patchSeller(1, patchReq);
+    }
+
+    @Test
+    void deleteSeller_ReturnsNull() {
+        //given
+        doNothing().when(this.sellerService).deleteSellerById(1);
+
+        //when
+        var re = sellerController.deleteSeller(1);
+
+        //then
+        assertNotNull(re);
+        assertEquals(HttpStatus.OK, re.getStatusCode());
+        assertEquals(null, re.getBody());
+        verify(sellerService).deleteSellerById(1);
     }
 }
