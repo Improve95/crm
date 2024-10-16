@@ -25,4 +25,8 @@ public class CustomCrmException extends RuntimeException {
     protected Set<String> fieldsWithError;
 
     protected Instant time;
+
+    public List<String> getFieldsWithErrorList() {
+        return fieldsWithError.stream().toList();
+    }
 }

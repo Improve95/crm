@@ -33,7 +33,7 @@ public class SellerController {
 
     private final SellerValidator sellerValidator;
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<SellerDataResponse>> getAllSellers() {
         return new ResponseEntity<>(sellerService.getAllSellers(), HttpStatus.OK);
     }
