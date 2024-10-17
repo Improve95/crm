@@ -16,6 +16,7 @@ import lombok.Setter;
 public class TransactionPostRequest {
 
     @NotNull
+    @Min(1)
     private int sellerId;
 
     @Min(0)

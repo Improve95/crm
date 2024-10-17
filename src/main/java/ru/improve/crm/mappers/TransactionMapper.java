@@ -16,6 +16,6 @@ public interface TransactionMapper {
 
     TransactionPostResponse toTransactionPostResponse(Transaction transaction);
 
-    TransactionDataResponse toTransactionGetResponse(Transaction transaction);
+    TransactionDataResponse toTransactionDataResponse(Transaction transaction);
 
 }

@@ -49,7 +49,7 @@ public class SellerControllerIt {
         em.createNativeQuery("truncate transactions").executeUpdate();
     }
 
-    private void fillSimpleData() {
+    private void fillSimpleSellerData() {
         em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name1', 'contact1', current_timestamp)")
                 .executeUpdate();
         em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name2', 'contact2', current_timestamp)")
@@ -59,7 +59,7 @@ public class SellerControllerIt {
     @Test
     void getAllSellers_ReturnsValidSellerDataResponse() throws Exception {
         //given
-        fillSimpleData();
+        fillSimpleSellerData();
         var reqBuilder = get("/sellers");
 
         //when
@@ -89,7 +89,7 @@ public class SellerControllerIt {
     @Test
     void getSellerById_ReturnsValidSellerDataResponse() throws Exception {
         //given
-        fillSimpleData();
+        fillSimpleSellerData();
         var reqBuilder = get("/sellers/1");
 
         //when
@@ -111,7 +111,7 @@ public class SellerControllerIt {
     @Test
     void saveSeller_ValidPostSellerData_ReturnsIdSavedSeller() throws Exception {
         //given
-        fillSimpleData();
+        fillSimpleSellerData();
         var reqBuilderPost = post("/sellers");
         SellerPostRequest spr = new SellerPostRequest("name3", "contact3");
 
@@ -132,7 +132,7 @@ public class SellerControllerIt {
     @Test
     void saveSeller_NotValidPostSellerData_ReturnsIdSavedSeller() throws Exception {
         //given
-        fillSimpleData();
+        fillSimpleSellerData();
         var reqBuilderPost = post("/sellers");
         SellerPostRequest spr = new SellerPostRequest("name3", "contact2");
 
@@ -153,7 +153,7 @@ public class SellerControllerIt {
     @Test
     void deleteSellerById_ReturnsEmptyResponseEntity() throws Exception {
         //giver
-        fillSimpleData();
+        fillSimpleSellerData();
 
         var reqBuilderGet = get("/sellers/1");
         this.mockMvc.perform(reqBuilderGet)
@@ -182,7 +182,7 @@ public class SellerControllerIt {
         this.mockMvc.perform(reqBuilderGet2)
                 //then
                 .andExpectAll(
-                        status().is(400),
+                        status().is(404),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json("""
                                     {
@@ -196,7 +196,7 @@ public class SellerControllerIt {
     @Test
     public void patchSeller_ValidPatchData_ReturnPatchSellerData() throws Exception {
         //given
-        fillSimpleData();
+        fillSimpleSellerData();
 
         var regBuilderPatch = patch("/sellers/1");
         SellerPatchRequest spr = new SellerPatchRequest("name10", "contact10");
@@ -220,7 +220,7 @@ public class SellerControllerIt {
     @Test
     public void patchSeller_NotValidPatchData_ReturnPatchSellerData() throws Exception {
         //given
-        fillSimpleData();
+        fillSimpleSellerData();
 
         var regBuilderPatch = patch("/sellers/1");
         SellerPatchRequest spr = new SellerPatchRequest("", "contact10");

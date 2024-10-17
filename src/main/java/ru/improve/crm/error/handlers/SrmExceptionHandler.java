@@ -31,8 +31,7 @@ public class SrmExceptionHandler {
     }
 
     private HttpStatus determineHttpStatus(Exception ex) {
-        if (ex instanceof NotFoundException ||
-            ex instanceof InDtoException ||
+        if (ex instanceof InDtoException ||
             ex instanceof DateTimeParseException ||
             ex instanceof AlreadyExistException) {
 
