@@ -45,11 +45,11 @@ public class SellerDaoImp implements SellerDao {
 
         Query query = em.createNativeQuery(
                                 """
-                                select s.* from sellers s where s.id = (
+                                select s.* from sellers s inner join  (
                                     select seller from transactions t
                                     where t.transaction_date > :startPeriod and t.transaction_date < :endPeriod
                                     group by seller 
-                                    having (sum(t.amount) < :maxAmount))
+                                    having (sum(t.amount) < :maxAmount)) on s.id = seller
                                 """, Seller.class)
                 .setParameter("startPeriod", startPeriod)
                 .setParameter("endPeriod", endPeriod)

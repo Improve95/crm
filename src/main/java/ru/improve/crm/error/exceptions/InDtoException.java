@@ -7,4 +7,8 @@ public class InDtoException extends CustomCrmException {
     public InDtoException(String message, List<String> fieldsWithError) {
         super(message, fieldsWithError);
     }
+
+    public List<String> getFieldsWithErrorList() {
+        return fieldsWithError.stream().toList();
+    }
 }

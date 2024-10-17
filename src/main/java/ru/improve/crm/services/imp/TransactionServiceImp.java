@@ -8,7 +8,7 @@ import ru.improve.crm.dao.repositories.SellerRepository;
 import ru.improve.crm.dao.repositories.TransactionRepository;
 import ru.improve.crm.models.Seller;
 import ru.improve.crm.models.transaction.Transaction;
-import ru.improve.crm.dto.transaction.TransactionGetResponse;
+import ru.improve.crm.dto.transaction.TransactionDataResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
 import ru.improve.crm.error.exceptions.NotFoundException;
@@ -31,32 +31,40 @@ public class TransactionServiceImp implements TransactionService {
 
     @Transactional
     @Override
-    public List<TransactionGetResponse> getAllTransactions() {
+    public List<TransactionDataResponse> getAllTransactions() {
         List<Transaction> transactions = transactionRepository.findAll();
         return transactions.stream()
-                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
-                .collect(Collectors.toList());
+                .map(transaction ->  {
+                    TransactionDataResponse response = transactionMapper.toTransactionDataResponse(transaction);
+                    response.setSellerId(transaction.getSeller().getId());
+                    return response;
+                }).collect(Collectors.toList());
     }
 
     @Transactional
     @Override
-    public TransactionGetResponse getTransactionById(int id) {
+    public TransactionDataResponse getTransactionById(int id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found transaction", List.of("id")));
 
-        return transactionMapper.toTransactionGetResponse(transaction);
+        TransactionDataResponse response = transactionMapper.toTransactionDataResponse(transaction);
+        response.setSellerId(transaction.getSeller().getId());
+        return response;
     }
 
     @Transactional
     @Override
-    public List<TransactionGetResponse> getAllTransactionsBySellerId(int sellerId) {
+    public List<TransactionDataResponse> getAllTransactionsBySellerId(int sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("not found seller", List.of("id")));
 
         List<Transaction> transactions = seller.getTransactions();
         return transactions.stream()
-                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
-                .collect(Collectors.toList());
+                .map(transaction -> {
+                    TransactionDataResponse response = transactionMapper.toTransactionDataResponse(transaction);
+                    response.setSellerId(transaction.getSeller().getId());
+                    return response;
+                }).collect(Collectors.toList());
     }
 
     @Transactional

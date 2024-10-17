@@ -1,8 +1,8 @@
 package ru.improve.crm.services;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
-import ru.improve.crm.dto.seller.SellerGetResponse;
+import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
 import ru.improve.crm.dto.seller.SellerPostResponse;
@@ -12,19 +12,19 @@ import java.util.List;
 
 public interface SellerService {
 
-    List<SellerGetResponse> getAllSellers();
+    List<SellerDataResponse> getAllSellers();
 
-    SellerGetResponse getSellerById(int id);
+    SellerDataResponse getSellerById(int id);
 
     @Transactional
-    SellerGetResponse getMostProductivitySellerByPeriod(
+    SellerDataResponse getMostProductivitySellerByPeriod(
             MostProductivityByPeriodRequest request);
 
-    List<SellerGetResponse> getSellersWithLessAmountByPeriod(WithLessAmountByPeriodRequest request);
+    List<SellerDataResponse> getSellersWithLessAmountByPeriod(WithLessAmountByPeriodRequest request);
 
     SellerPostResponse saveSeller(SellerPostRequest sellerPostRequest);
 
-    void patchSeller(int updateSellerId, SellerPatchRequest sellerPatchRequest);
+    SellerDataResponse patchSeller(int updateSellerId, SellerPatchRequest sellerPatchRequest);
 
     void deleteSellerById(int sellerId);
 }

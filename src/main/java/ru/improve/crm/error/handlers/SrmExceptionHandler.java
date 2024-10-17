@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.improve.crm.error.exceptions.AlreadyExistException;
 import ru.improve.crm.error.exceptions.CustomCrmException;
 import ru.improve.crm.error.exceptions.InDtoException;
+import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.error.responseBody.CustomErrorResponse;
 import ru.improve.crm.error.responseBody.DefaultErrorResponse;
-
-import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
 public class SrmExceptionHandler {
@@ -31,13 +30,16 @@ public class SrmExceptionHandler {
 
     private HttpStatus determineHttpStatus(Exception ex) {
         if (ex instanceof InDtoException ||
-                ex instanceof DateTimeParseException ||
-                ex instanceof AlreadyExistException) {
+            ex instanceof AlreadyExistException) {
 
             return HttpStatus.BAD_REQUEST;
         }
 
-        return HttpStatus.SERVICE_UNAVAILABLE;
+        if (ex instanceof NotFoundException) {
+            return HttpStatus.NOT_FOUND;
+        }
+
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
 }
