@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.improve.crm.dao.imp.SellerDaoImp;
-import ru.improve.crm.dao.repositories.SellerRepository;
 import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
 import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPostRequest;
@@ -18,7 +17,6 @@ import ru.improve.crm.mappers.SellerMapper;
 import ru.improve.crm.models.Seller;
 import ru.improve.crm.services.imp.SellerServiceImp;
 
-import javax.swing.text.html.parser.Entity;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
@@ -26,7 +24,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)

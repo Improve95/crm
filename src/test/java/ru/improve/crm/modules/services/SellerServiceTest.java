@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import ru.improve.crm.dao.repositories.SellerRepository;
 import ru.improve.crm.dto.seller.SellerDataResponse;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
@@ -48,7 +47,7 @@ public class SellerServiceTest {
     List<SellerPostResponse> sellerPostResponses;
     List<SellerDataResponse> sellerDataResponses;
 
-    LocalDateTime dateTime;
+    LocalDateTime dateTime = LocalDateTime.now();
 
     @BeforeEach
     void initialLists() {
