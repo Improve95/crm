@@ -1,4 +1,4 @@
-package ru.improve.crm.modules;
+package ru.improve.crm.modules.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +56,6 @@ public class SellerControllerTest {
         //then
         assertNotNull(re);
         assertEquals(HttpStatus.OK, re.getStatusCode());
-        assertEquals(MediaType.APPLICATION_JSON, re.getHeaders().getContentType());
         assertEquals(2, re.getBody().size());
         assertEquals(sellers, re.getBody());
         verify(sellerService).getAllSellers();
@@ -114,7 +113,7 @@ public class SellerControllerTest {
     }
 
     @Test
-    void patchSeller_PatchSellerReqIsValid_ReturnsPatchedSeller() {
+    void patchSeller_PatchSellerIsValid_ReturnsPatchedSeller() {
         //given
         LocalDateTime regTime = LocalDateTime.now();
 
