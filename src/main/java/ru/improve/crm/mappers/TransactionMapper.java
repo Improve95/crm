@@ -3,7 +3,7 @@ package ru.improve.crm.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
-import ru.improve.crm.dto.transaction.TransactionGetResponse;
+import ru.improve.crm.dto.transaction.TransactionDataResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
 import ru.improve.crm.models.transaction.Transaction;
@@ -16,6 +16,6 @@ public interface TransactionMapper {
 
     TransactionPostResponse toTransactionPostResponse(Transaction transaction);
 
-    TransactionGetResponse toTransactionGetResponse(Transaction transaction);
+    TransactionDataResponse toTransactionGetResponse(Transaction transaction);
 
 }

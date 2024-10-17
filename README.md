@@ -186,5 +186,74 @@ transactions
 
 запрос/ответ в форме application/json
 
-GET transactions
+GET /transactions - получение всех транзакций
+
+Response
+
+HttpStatus: 200
+
+ResponseBody
+```
+    "sellerId": int
+    "amount": int, 
+    "paymentType": "string",
+    "transactionDate": "string"
+```
+
+1. sellerId- идентификатор продавца, совершившего транзакцию
+2. amount - сумма транзакции в int4
+3. paymentType - тип оплаты транзакции в enum('CASH', 'CARD', 'TRANSFER')
+4. transactionDate - дата совершения транзакции
+
+GET /transactions/{id} - получение транзакции c идентификатором {id}
+
+Response
+
+HttpStatus: 200
+
+ResponseBody
+```
+    "sellerId": int
+    "amount": int, 
+    "paymentType": "string",
+    "transactionDate": "string"
+```
+
+HttpStatus: 404
+
+ResponseBody
+```
+    {
+        "message": "string",
+        "fieldsWithError": [
+            "string"
+        ],
+        "time": "string"
+}
+```
+
+1. message - сообщение ошибки
+2. fieldsWithError - поля запроса, которые вызвали ошибку
+3. time - время возникновения ошибки в iso формате
+
+
+GET /transactions/seller/{id} - получение всех транзакций, выполненных продавцом в идентификатором {id}
+
+Response
+
+HttpStatus: 400
+
+ResponseBody
+'''
+    [
+        {
+            "sellerId": int
+            "amount": int, 
+            "paymentType": "string",
+            "transactionDate": "string"
+        },
+    ]
+'''
+
+Возвращается список транзакций
 
