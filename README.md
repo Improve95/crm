@@ -469,4 +469,7 @@ testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.
 ./gradlew bootRun
 ```
 
-#### Запуск :
+#### Запуск тестов:
+```
+./gradlew test
+```
