@@ -34,8 +34,11 @@ public class TransactionServiceImp implements TransactionService {
     public List<TransactionDataResponse> getAllTransactions() {
         List<Transaction> transactions = transactionRepository.findAll();
         return transactions.stream()
-                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
-                .collect(Collectors.toList());
+                .map(transaction ->  {
+                    TransactionDataResponse response = transactionMapper.toTransactionDataResponse(transaction);
+                    response.setSellerId(transaction.getSeller().getId());
+                    return response;
+                }).collect(Collectors.toList());
     }
 
     @Transactional
@@ -44,7 +47,9 @@ public class TransactionServiceImp implements TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("not found transaction", List.of("id")));
 
-        return transactionMapper.toTransactionGetResponse(transaction);
+        TransactionDataResponse response = transactionMapper.toTransactionDataResponse(transaction);
+        response.setSellerId(transaction.getSeller().getId());
+        return response;
     }
 
     @Transactional
@@ -55,8 +60,11 @@ public class TransactionServiceImp implements TransactionService {
 
         List<Transaction> transactions = seller.getTransactions();
         return transactions.stream()
-                .map(transaction -> transactionMapper.toTransactionGetResponse(transaction))
-                .collect(Collectors.toList());
+                .map(transaction -> {
+                    TransactionDataResponse response = transactionMapper.toTransactionDataResponse(transaction);
+                    response.setSellerId(transaction.getSeller().getId());
+                    return response;
+                }).collect(Collectors.toList());
     }
 
     @Transactional
