@@ -1,4 +1,4 @@
-package ru.improve.crm.controllers;
+package ru.improve.crm.itegration.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

@@ -1,4 +1,4 @@
-package ru.improve.crm.controllers;
+package ru.improve.crm.itegration.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -12,8 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import ru.improve.crm.dao.repositories.SellerRepository;
+import ru.improve.crm.dto.seller.MostProductivityByPeriodRequest;
 import ru.improve.crm.dto.seller.SellerPatchRequest;
 import ru.improve.crm.dto.seller.SellerPostRequest;
+import ru.improve.crm.dto.seller.WithLessAmountByPeriodRequest;
+
+import java.time.LocalDateTime;
+import java.time.Period;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +43,10 @@ public class SellerControllerIt {
     @Autowired
     private EntityManager em;
 
+    private LocalDateTime date = LocalDateTime.now();
+
     private ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+    private ObjectMapper om = new ObjectMapper().findAndRegisterModules();
 
     @BeforeEach
     void truncateTable() {
@@ -53,6 +61,25 @@ public class SellerControllerIt {
         em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name1', 'contact1', current_timestamp)")
                 .executeUpdate();
         em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name2', 'contact2', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name3', 'contact3', current_timestamp)")
+                .executeUpdate();
+    }
+
+    private void fillTransactionData() {
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (1, 100, 'CARD', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (1, 1000, 'CARD', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (1, 1500, 'CASH', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (2, 1500, 'CASH', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (2, 1500, 'CASH', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (2, 1500, 'CASH', current_timestamp)")
+                .executeUpdate();
+        em.createNativeQuery("insert into transactions (seller, amount, payment_type, transaction_date) VALUES (2, 1500, 'CASH', current_timestamp)")
                 .executeUpdate();
     }
 
@@ -137,7 +164,7 @@ public class SellerControllerIt {
         SellerPostRequest spr = new SellerPostRequest("name3", "contact2");
 
         //when
-        this.mockMvc.perform(reqBuilderPost.contentType(MediaType.APPLICATION_JSON).content(ow.writeValueAsString(spr)))
+        this.mockMvc.perform(reqBuilderPost.contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(spr)))
                 //then
                 .andExpectAll(
                         status().is(400),
@@ -235,6 +262,84 @@ public class SellerControllerIt {
                                     {
                                         "fieldsWithError": ["name"]
                                     }
+                                    """)
+                );
+    }
+
+    @Test
+    public void getMostProductivitySellerByPeriod_RequestIsValid_ReturnSellers() throws Exception {
+        //given
+        fillSimpleSellerData();
+        fillTransactionData();
+
+        LocalDateTime startPeriod = LocalDateTime.now().minus(Period.ofDays(1));
+        LocalDateTime endPeriod = LocalDateTime.now().plus(Period.ofDays(1));
+        MostProductivityByPeriodRequest req = new MostProductivityByPeriodRequest(startPeriod, endPeriod);
+        var reqBuilder = get("/sellers/mostProductivity");
+
+        //when
+        mockMvc.perform(reqBuilder.contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(req)))
+                //then
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        content().json("""
+                                        {
+                                            "id": 1,
+                                            "name": "name1",
+                                            "contactInfo": "contact1"
+                                        }
+                                    """)
+                );
+    }
+
+    @Test
+    public void getSellersWithLessAmountByPeriod_RequestIsValid_ReturnSellers() throws Exception {
+        //given
+        fillSimpleSellerData();
+        fillTransactionData();
+
+        LocalDateTime startPeriod = LocalDateTime.now().minus(Period.ofDays(1));
+        LocalDateTime endPeriod = LocalDateTime.now().plus(Period.ofDays(1));
+        WithLessAmountByPeriodRequest req = new WithLessAmountByPeriodRequest(3000, startPeriod, endPeriod);
+        var reqBuilder = get("/sellers/withLessAmount");
+
+        //when
+        mockMvc.perform(reqBuilder.contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(req)))
+                //then
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        content().json("""
+                                        [
+                                            {
+                                                "id": 1,
+                                                "name": "name1",
+                                                "contactInfo": "contact1"
+                                            }
+                                        ]
+                                    """)
+                );
+
+        req = new WithLessAmountByPeriodRequest(10000, startPeriod, endPeriod);
+        mockMvc.perform(reqBuilder.contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(req)))
+                //then
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        content().json("""
+                                        [
+                                            {
+                                                "id": 1,
+                                                "name": "name1",
+                                                "contactInfo": "contact1"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "name2",
+                                                "contactInfo": "contact2"
+                                            }
+                                        ]
                                     """)
                 );
     }

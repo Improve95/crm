@@ -1,4 +1,4 @@
-package ru.improve.crm.controllers.imp;
+package ru.improve.crm.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package ru.improve.crm.controllers;
+package ru.improve.crm.modules;
 
 import org.junit.jupiter.api.Test;
 
