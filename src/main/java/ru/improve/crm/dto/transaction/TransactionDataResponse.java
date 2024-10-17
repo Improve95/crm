@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransactionGetResponse {
+public class TransactionDataResponse {
 
     private int id;
 

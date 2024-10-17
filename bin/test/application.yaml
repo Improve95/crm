@@ -1,0 +1,17 @@
+
+spring:
+  application:
+    name: crmTest
+
+  datasource:
+    url: jdbc:postgresql://localhost:5431/crmTestDb
+    username: postgres
+    password: postgres
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: false
+    open-in-view: false
+
