@@ -33,10 +33,12 @@ HttpStatus: 200
 
 ResponseBody
 ```
+{
     "id": number,
     "name": "string", 
     "contactInfo": "string",
     "registrationDate": "string"
+}
 ```
 
 1. id - идентификационный номер под которым сохранен продавец
@@ -60,12 +62,12 @@ ResponseBody
 }
 ```
 
-HttpStatus: 400
+HttpStatus: 404
 
 ResponseBody
 ```
 {
-    "message": "not found seller",
+    "message": "string",
     "fieldsWithError": [
         "string"
     ],
@@ -148,6 +150,19 @@ ResponseBody
 ```
 {
     "message": "string",
+    "fieldsWithError": [
+        "string"
+    ],
+    "time": "string"
+}
+```
+
+HttpStatus: 404
+
+ResponseBody
+```
+{
+    "message": "string",
     "fieldsWithError": 
     [
         "string",
@@ -166,7 +181,7 @@ ResponseBody
 ```
 ```
 
-HttpStatus 400
+HttpStatus 404
 
 ResponseBody
 ```
@@ -260,8 +275,9 @@ GET /transactions/seller/{id} - получение всех транзакций
 
 Response
 
-HttpStatus: 400
+HttpStatus: 200
 
+Возвращается список транзакций
 ResponseBody
 ```
     [
@@ -274,7 +290,18 @@ ResponseBody
     ]
 ```
 
-Возвращается список транзакций
+HttpStatus: 404
+
+ResponseBody
+```
+{
+    "message": "string",
+    "fieldsWithError": [
+        "string"
+    ],
+    "time": "string"
+}
+```
 
 POST /transactons
 
@@ -287,7 +314,7 @@ RequestBody
 }
 ```
 
-1. sellerId - номер продавца совешающего транзакцию int4
+1. sellerId - номер продавца совешающего транзакцию в int4
 2. amount - сумма транзакции в int4, больше нуля
 3. paymentType - тип оплаты в enum('CASH', 'CARD', 'TRANSFER')
 
@@ -325,9 +352,9 @@ ResponseBody
 
 запрос/ответ в форме application/json
 
-возвращает самого продуктивного продавца за промежуток времени
+
+GET /sellers/mostProductivity - возвращает самого продуктивного продавца за промежуток времени 
 по сумме соверенных транзкций
-GET /sellers/mostProductivity
 
 RequestBody
 ```
@@ -344,4 +371,104 @@ Response
 
 HttpStatus: 200
 
+ResponseBody
+```
+{
+    "id": number,
+    "name": "string", 
+    "contactInfo": "string",
+    "registrationDate": "string"
+}
+```
+
 HttpStatus: 400
+
+ResponseBody
+```
+{
+    "message": "string",
+    "fieldsWithError": [
+        "string"
+    ],
+    "time": "string"
+}
+```
+
+GET /sellers/withLessAmount - возвращает продавцов с суммой транзакций меньше чем maxAmount за период времени
+
+RequestBody
+```
+{
+    "maxAmount": int,
+    "startPeriod": "string"
+    "endPeriod": "string"
+}
+```
+
+HttpStatus: 400
+
+ResponseBody
+```
+{
+    "message": "string",
+    "fieldsWithError": [
+        "string"
+    ],
+    "time": "string"
+}
+```
+
+#### Общие ошибки:
+
+HttpStatus: 500
+
+ResponseBody
+```
+{
+    "message": "string",
+    "time": "string"
+}
+```
+
+### Форматы
+1. iso формат времени - "2000-10-15T21:00:00.000"
+
+# Техническая документация
+
+### Используемые зависимости:
+#### Приложение:
+```
+implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+implementation 'org.springframework.boot:spring-boot-starter-validation'
+implementation 'org.springframework.boot:spring-boot-starter-web'
+implementation 'org.slf4j:slf4j-api:2.0.16'
+runtimeOnly 'org.postgresql:postgresql'
+compileOnly 'org.projectlombok:lombok:1.18.34'
+annotationProcessor 'org.projectlombok:lombok:1.18.34'
+implementation 'org.mapstruct:mapstruct:1.6.2'
+annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
+```
+#### Тесты: 
+```
+testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+testImplementation 'org.testcontainers:postgresql'
+testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+```
+
+### Сборка и запуск проекта:
+#### Создание скриптов для сборки:
+```
+./gradle wrapper
+```
+
+#### Создание исполяемого JAR архива приложения:
+```
+./gradlew 
+```
+
+#### Запуск приложения:
+```
+./gradlew
+```

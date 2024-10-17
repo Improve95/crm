@@ -31,15 +31,19 @@ public class SrmExceptionHandler {
     }
 
     private HttpStatus determineHttpStatus(Exception ex) {
-        if (    ex instanceof NotFoundException ||
-                ex instanceof InDtoException ||
-                ex instanceof DateTimeParseException ||
-                ex instanceof AlreadyExistException) {
+        if (ex instanceof NotFoundException ||
+            ex instanceof InDtoException ||
+            ex instanceof DateTimeParseException ||
+            ex instanceof AlreadyExistException) {
 
             return HttpStatus.BAD_REQUEST;
         }
 
-        return HttpStatus.SERVICE_UNAVAILABLE;
+        if (ex instanceof NotFoundException) {
+            return HttpStatus.NOT_FOUND;
+        }
+
+        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
 }
