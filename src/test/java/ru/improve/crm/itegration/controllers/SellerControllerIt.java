@@ -62,8 +62,6 @@ public class SellerControllerIt {
                 .executeUpdate();
         em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name2', 'contact2', current_timestamp)")
                 .executeUpdate();
-        em.createNativeQuery("insert into sellers (name, contact_info, registration_date) values ('name3', 'contact3', current_timestamp)")
-                .executeUpdate();
     }
 
     private void fillTransactionData() {
@@ -285,9 +283,9 @@ public class SellerControllerIt {
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json("""
                                         {
-                                            "id": 1,
-                                            "name": "name1",
-                                            "contactInfo": "contact1"
+                                            "id": 2,
+                                            "name": "name2",
+                                            "contactInfo": "contact2"
                                         }
                                     """)
                 );
@@ -297,6 +295,9 @@ public class SellerControllerIt {
     public void getSellersWithLessAmountByPeriod_RequestIsValid_ReturnSellers() throws Exception {
         //given
         fillSimpleSellerData();
+        em.createNativeQuery("insert into sellers (name, contact_info, registration_date) " +
+                        "values ('name3', 'contact3', current_timestamp)")
+                .executeUpdate();
         fillTransactionData();
 
         LocalDateTime startPeriod = LocalDateTime.now().minus(Period.ofDays(1));
