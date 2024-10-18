@@ -44,16 +44,16 @@ public class SellerController {
     }
 
     @GetMapping("/mostProductivity")
-    public SellerDataResponse getMostProductivitySellerByPeriod(@Validated @RequestBody MostProductivityByPeriodRequest request,
+    public ResponseEntity<SellerDataResponse> getMostProductivitySellerByPeriod(@Validated @RequestBody MostProductivityByPeriodRequest request,
                                                                 BindingResult bindingResult) {
 
         sellerValidator.validate(request, bindingResult);
 
-        return sellerService.getMostProductivitySellerByPeriod(request);
+        return new ResponseEntity<>(sellerService.getMostProductivitySellerByPeriod(request), HttpStatus.OK);
     }
 
     @GetMapping("/withLessAmount")
-    public ResponseEntity<List<SellerDataResponse>>  getSellersWithLessAmountByPeriod(@Validated @RequestBody WithLessAmountByPeriodRequest request,
+    public ResponseEntity<List<SellerDataResponse>> getSellersWithLessAmountByPeriod(@Validated @RequestBody WithLessAmountByPeriodRequest request,
                                                                                       BindingResult bindingResult) {
 
         sellerValidator.validate(request, bindingResult);

@@ -455,7 +455,6 @@ testImplementation 'org.springframework.boot:spring-boot-starter-test'
 testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 testImplementation 'org.testcontainers:postgresql'
 testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
 ```
 
 ### Сборка и запуск проекта:
@@ -464,12 +463,12 @@ testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.
 ./gradle wrapper
 ```
 
-#### Сборка и запуск приложения:
+#### Создание исполяемого JAR архива приложения:
 ```
-./gradlew bootRun
+./gradlew 
 ```
 
-#### Запуск тестов:
+#### Запуск приложения:
 ```
-./gradlew test
+./gradlew
 ```
