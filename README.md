@@ -418,7 +418,7 @@ ResponseBody
 }
 ```
 
-#### Общие ошибки:
+## Общие ошибки:
 
 HttpStatus: 500
 
@@ -430,7 +430,12 @@ ResponseBody
 }
 ```
 
-### Форматы
+## Описание кодов ошибок
+1. 404 - Сущность не была найдена по переданному атрибуту
+2. 400 - Неверный запрос, не соответствующий api
+3. 500 - Ошибка на стороне сервиса
+
+## Форматы
 1. iso формат времени - "2000-10-15T21:00:00.000"
 
 # Техническая документация
@@ -455,7 +460,6 @@ testImplementation 'org.springframework.boot:spring-boot-starter-test'
 testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 testImplementation 'org.testcontainers:postgresql'
 testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
 ```
 
 ### Сборка и запуск проекта:
@@ -464,12 +468,12 @@ testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.
 ./gradle wrapper
 ```
 
-#### Сборка и запуск приложения:
+#### Создание исполяемого JAR архива приложения:
 ```
-./gradlew bootRun
+./gradlew 
 ```
 
-#### Запуск тестов:
+#### Запуск приложения:
 ```
-./gradlew test
+./gradlew
 ```
