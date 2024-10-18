@@ -1,4 +1,4 @@
-package ru.improve.crm.modules.controllers;
+package ru.improve.crm.unit.controllers;
 
 
 import org.junit.jupiter.api.BeforeEach;

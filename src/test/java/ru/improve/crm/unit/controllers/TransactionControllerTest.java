@@ -1,4 +1,4 @@
-package ru.improve.crm.modules.controllers;
+package ru.improve.crm.unit.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import ru.improve.crm.controllers.TransactionController;
 import ru.improve.crm.dto.transaction.TransactionDataResponse;
@@ -16,12 +15,9 @@ import ru.improve.crm.dto.transaction.TransactionPostResponse;
 import ru.improve.crm.models.Seller;
 import ru.improve.crm.models.transaction.Transaction;
 import ru.improve.crm.services.imp.TransactionServiceImp;
-import ru.improve.crm.validators.TransactionValidator;
 import ru.improve.crm.validators.imp.TransactionValidatorImp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

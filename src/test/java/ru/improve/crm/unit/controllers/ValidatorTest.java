@@ -1,4 +1,4 @@
-package ru.improve.crm.modules.controllers;
+package ru.improve.crm.unit.controllers;
 
 import org.aspectj.apache.bcel.classfile.Field;
 import org.junit.jupiter.api.Test;

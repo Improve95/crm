@@ -1,4 +1,4 @@
-package ru.improve.crm.modules.controllers;
+package ru.improve.crm.unit.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import ru.improve.crm.controllers.SellerController;
 import ru.improve.crm.dto.seller.SellerDataResponse;

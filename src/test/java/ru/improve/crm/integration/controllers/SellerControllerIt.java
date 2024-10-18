@@ -1,4 +1,4 @@
-package ru.improve.crm.itegration.controllers;
+package ru.improve.crm.integration.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -31,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 @Transactional
 public class SellerControllerIt {
-
-    private static final String URL = "localhost:8080";
 
     @Autowired
     private MockMvc mockMvc;
@@ -106,6 +104,11 @@ public class SellerControllerIt {
                                         "id": 2,
                                         "name": "name2",
                                         "contactInfo": "contact2"
+                                    },
+                                    {
+                                        "id": 3,
+                                        "name": "name3",
+                                        "contactInfo": "contact3"
                                     }
                                 ]
                                 """)
@@ -140,7 +143,7 @@ public class SellerControllerIt {
         //given
         fillSimpleSellerData();
         var reqBuilderPost = post("/sellers");
-        SellerPostRequest spr = new SellerPostRequest("name3", "contact3");
+        SellerPostRequest spr = new SellerPostRequest("name4", "contact4");
 
         //when
         this.mockMvc.perform(reqBuilderPost.contentType(MediaType.APPLICATION_JSON).content(ow.writeValueAsString(spr)))
@@ -150,7 +153,7 @@ public class SellerControllerIt {
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json("""
                                     {
-                                        "id": 3
+                                        "id": 4
                                     }
                                 """)
                 );
@@ -285,9 +288,9 @@ public class SellerControllerIt {
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json("""
                                         {
-                                            "id": 1,
-                                            "name": "name1",
-                                            "contactInfo": "contact1"
+                                            "id": 2,
+                                            "name": "name2",
+                                            "contactInfo": "contact2"
                                         }
                                     """)
                 );

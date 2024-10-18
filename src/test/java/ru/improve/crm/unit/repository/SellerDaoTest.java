@@ -1,4 +1,4 @@
-package ru.improve.crm.modules.repository;
+package ru.improve.crm.unit.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
