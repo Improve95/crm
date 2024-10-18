@@ -462,18 +462,27 @@ testImplementation 'org.testcontainers:postgresql'
 testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 ```
 
+## Инструкция по сборке и запуску
+
+### Требования
+- Установленный JDK (версия 21)
+- Установленный Gradle (версия 8.0 или выше)
+- Установленный Docker и развернутый на нем контейнер с базой данных Postgresql
+
+Название базы данных, username и password базы данных можно изменить в файле конфигурации
+```
+application.yaml
+```
+
 ### Сборка и запуск проекта:
 #### Создание скриптов для сборки:
 ```
 ./gradle wrapper
 ```
 
-#### Создание исполяемого JAR архива приложения:
-```
-./gradlew 
-```
+#### Компиляция и запуск приложения:
 
-#### Запуск приложения:
 ```
-./gradlew
+./gradlew bootRUn
 ```
+Приложение будет запущено на [http://localhost:8080](http://localhost:8080) (по умолчанию).
