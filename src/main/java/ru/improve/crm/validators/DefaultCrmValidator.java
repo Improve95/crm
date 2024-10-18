@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public abstract class DefaultCrmValidator {
 
-    protected void createAndThrowException(Errors errors) {
+    public void createAndThrowException(Errors errors) {
         if (errors.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             for (FieldError error : errors.getFieldErrors()) {

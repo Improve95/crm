@@ -44,9 +44,6 @@ public class TransactionServiceTest {
     @InjectMocks
     TransactionServiceImp transactionService;
 
-//    @InjectMocks
-//    TransactionMapper transactionMapper;
-
     List<Seller> sellers;
 
     List<TransactionDataResponse> transactionDataResponses;

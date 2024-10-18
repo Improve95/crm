@@ -1,6 +1,5 @@
 package ru.improve.crm.modules.services;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,9 +30,6 @@ public class AnalyticsTests {
 
     @Mock
     SellerDaoImp sellerDao;
-
-    @Mock
-    EntityManager em;
 
     @Mock
     SellerMapper sellerMapper;
