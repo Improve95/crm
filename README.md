@@ -33,12 +33,14 @@ HttpStatus: 200
 
 ResponseBody
 ```
-{
-    "id": number,
-    "name": "string", 
-    "contactInfo": "string",
-    "registrationDate": "string"
-}
+[
+    {
+        "id": number,
+        "name": "string", 
+        "contactInfo": "string",
+        "registrationDate": "string"
+    }
+]
 ```
 
 1. id - идентификационный номер под которым сохранен продавец
@@ -68,16 +70,16 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
 1. message - сообщение ошибки
-2. fieldsWithError - поля запроса, которые вызвали ошибку
-3. time - время возникновения ошибки в iso формате
+2. time - время возникновения ошибки в iso формате
+3. fieldsWithError - поля запроса, которые вызвали ошибку
 
 POST /sellers - сохранение нового продавца
 
@@ -113,10 +115,10 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
@@ -150,10 +152,10 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
@@ -219,18 +221,21 @@ HttpStatus: 200
 
 ResponseBody
 ```
-{
-    "sellerId": int
-    "amount": int, 
-    "paymentType": "string",
-    "transactionDate": "string"
-}
+[
+    {
+        "id": int
+        "sellerId": int
+        "amount": int, 
+        "paymentType": "string",
+        "transactionDate": "string"
+    }
+]
 ```
-
-1. sellerId- идентификатор продавца, совершившего транзакцию
-2. amount - сумма транзакции в int4
-3. paymentType - тип оплаты транзакции в enum('CASH', 'CARD', 'TRANSFER')
-4. transactionDate - дата совершения транзакции
+1. id - идентификатор транзакции
+2. sellerId- идентификатор продавца, совершившего транзакцию
+3. amount - сумма транзакции в int4
+4. paymentType - тип оплаты транзакции в enum('CASH', 'CARD', 'TRANSFER')
+5. transactionDate - дата совершения транзакции
 
 GET /transactions/{id} - получение транзакции c идентификатором {id}
 
@@ -241,6 +246,7 @@ HttpStatus: 200
 ResponseBody
 ```
 {
+    "id": int
     "sellerId": int
     "amount": int, 
     "paymentType": "string",
@@ -248,27 +254,22 @@ ResponseBody
 }
 ```
 
-1. sellerId - номер продавца совешающего транзакцию в int4
-2. amount - сумма транзакции в int4, больше нуля 
-3. paymentType - тип оплаты в enum('CASH', 'CARD', 'TRANSFER')
-4. transactionDate - дата совершения транзакции в iso формате
-
 HttpStatus: 404
 
 ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
 1. message - сообщение ошибки
-2. fieldsWithError - поля запроса, которые вызвали ошибку
-3. time - время возникновения ошибки в iso формате
+2. time - время возникновения ошибки в iso формате
+3. fieldsWithError - поля запроса, которые вызвали ошибку
 
 
 GET /transactions/seller/{id} - получение всех транзакций, выполненных продавцом в идентификатором {id}
@@ -282,6 +283,7 @@ ResponseBody
 ```
     [
         {
+            "id": int
             "sellerId": int
             "amount": int, 
             "paymentType": "string",
@@ -296,10 +298,10 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
@@ -339,10 +341,10 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
@@ -387,10 +389,10 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
@@ -411,10 +413,10 @@ ResponseBody
 ```
 {
     "message": "string",
+    "time": "string",
     "fieldsWithError": [
         "string"
-    ],
-    "time": "string"
+    ]
 }
 ```
 
@@ -459,6 +461,7 @@ testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 testImplementation 'org.springframework.boot:spring-boot-starter-test'
 testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 testImplementation 'org.testcontainers:postgresql'
+testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
 testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 ```
 
@@ -483,6 +486,6 @@ application.yaml
 #### Компиляция и запуск приложения:
 
 ```
-./gradlew bootRUn
+./gradlew bootRun
 ```
 Приложение будет запущено на [http://localhost:8080](http://localhost:8080) (по умолчанию).

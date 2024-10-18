@@ -1,8 +1,6 @@
 package ru.improve.crm.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.improve.crm.controllers.TransactionController;
 import ru.improve.crm.dto.transaction.TransactionDataResponse;
 import ru.improve.crm.dto.transaction.TransactionPostRequest;
 import ru.improve.crm.dto.transaction.TransactionPostResponse;
@@ -29,26 +28,26 @@ public class TransactionController {
     private final TransactionValidator transactionValidator;
 
     @GetMapping("")
-    public ResponseEntity<List<TransactionDataResponse>> getAllTransactions() {
-        return new ResponseEntity<>(transactionService.getAllTransactions(), HttpStatus.OK);
+    public List<TransactionDataResponse> getAllTransactions() {
+        return transactionService.getAllTransactions();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionDataResponse> getTransactionById(@PathVariable("id") int id) {
-        return new ResponseEntity<>(transactionService.getTransactionById(id), HttpStatus.OK);
+    public TransactionDataResponse getTransactionById(@PathVariable("id") int id) {
+        return transactionService.getTransactionById(id);
     }
-
     @GetMapping("/seller/{sellerId}")
-    public ResponseEntity<List<TransactionDataResponse>> getAllTransactionsBySellerId(@PathVariable("sellerId") int id) {
-        return new ResponseEntity<>(transactionService.getAllTransactionsBySellerId(id), HttpStatus.OK);
+    
+    public List<TransactionDataResponse> getAllTransactionsBySellerId(@PathVariable("sellerId") int id) {
+        return transactionService.getAllTransactionsBySellerId(id);
     }
 
     @PostMapping("")
-    public ResponseEntity<TransactionPostResponse> saveTransaction(@Validated @RequestBody TransactionPostRequest transactionPostRequest,
+    public TransactionPostResponse saveTransaction(@Validated @RequestBody TransactionPostRequest transactionPostRequest,
                                                    BindingResult bindingResult) {
 
         transactionValidator.validate(transactionPostRequest, bindingResult);
 
-        return new ResponseEntity<>(transactionService.saveTransaction(transactionPostRequest), HttpStatus.OK);
+        return transactionService.saveTransaction(transactionPostRequest);
     }
 }

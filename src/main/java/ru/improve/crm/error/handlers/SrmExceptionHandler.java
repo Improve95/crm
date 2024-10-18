@@ -2,6 +2,7 @@ package ru.improve.crm.error.handlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.improve.crm.error.exceptions.AlreadyExistException;
@@ -10,6 +11,8 @@ import ru.improve.crm.error.exceptions.InDtoException;
 import ru.improve.crm.error.exceptions.NotFoundException;
 import ru.improve.crm.error.responseBody.CustomErrorResponse;
 import ru.improve.crm.error.responseBody.DefaultErrorResponse;
+
+import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
 public class SrmExceptionHandler {
@@ -30,7 +33,8 @@ public class SrmExceptionHandler {
 
     private HttpStatus determineHttpStatus(Exception ex) {
         if (ex instanceof InDtoException ||
-            ex instanceof AlreadyExistException) {
+            ex instanceof AlreadyExistException ||
+            ex instanceof HttpMessageNotReadableException) {
 
             return HttpStatus.BAD_REQUEST;
         }
